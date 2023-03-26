@@ -14,9 +14,10 @@ if ! updates_aur=$(yay -Qum 2> /dev/null | wc -l); then
 fi
 
 updates=$((updates_arch + updates_aur))
+arch=$(uname -r | cut -d '-' -f1)
 
 if [ "$updates" -gt 0 ]; then
-    echo " $updates"
+    echo "%{F#C69F4A}$updates  "
 else
-    echo ""
+    echo "$arch  "
 fi

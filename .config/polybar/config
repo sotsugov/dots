@@ -1,0 +1,196 @@
+[colors]
+background = #CC131419
+foreground = #e6e6e1
+background-alt = #1C2333
+primary = #9fa7ca
+secondary = #242D41
+alert = #C69F4A
+disabled = #8e959e
+background-alt-2 = #1a1d24
+
+[global/wm]
+margin-bottom = 0
+margin-top = 0
+
+; include-file = ~/.config/polybar/colors
+; include-file = ~/.config/polybar/modules
+
+[bar/main]
+width = 100%
+height = 18pt
+offset-x = 1%
+offset-y = 1%
+fixed-center = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+padding-left = 3
+padding-right = 3
+
+module-margin = 1
+
+separator = •
+separator-foreground = ${colors.disabled}
+
+font-0 = "Berkeley Mono:size=10:weight=semibold;3"
+font-1 = "JetBrainsMono Nerd Font:size=10;3"
+
+modules-left = xworkspaces xwindow
+# modules-center = 
+modules-right = pulseaudio xkeyboard eth date package-updates powermenu
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+enable-ipc = true
+wm-restack = i3
+
+[module/package-updates]
+type = custom/script
+format-prefix-foreground = ${colors.primary}
+exec = /home/o/.config/polybar/scripts/package-updates.sh
+interval = 300
+
+[module/netip]
+type = custom/script
+exec = /home/o/.config/polybar/scripts/get-loc-by-ip.sh
+interval = 300
+format-prefix-foreground = ${colors.primary}
+
+[module/xworkspaces]
+type = internal/xworkspaces
+
+enable-click = true
+enable-scroll = true
+icon-default = •
+label-monitor =
+format = " <label-state> "
+
+label-active = %icon%%{O5}
+label-active-foreground = ${colors.foreground}
+label-occupied = %icon%%{O5}
+label-occupied-foreground = ${colors.secondary}
+label-urgent = %icon%%{O5}
+label-urgent-foreground = ${colors.alert}
+label-empty = %icon%%{O5}
+label-empty-foreground = ${colors.disabled}
+
+; [module/xwindow]
+; type = internal/xwindow
+; label = %title:0:60:...%
+
+# [module/filesystem]
+# type = internal/fs
+# interval = 25
+# mount-0 = /
+
+# [module/kernel]
+# type = custom/script
+# exec = uname -r | cut -d '-' -f1
+# label-active-font = 1
+# format-prefix = " "
+# format-prefix-foreground = ${colors.primary}
+
+; [module/pulseaudio2]
+; type = internal/pulseaudio
+
+; format-volume-prefix = "VOL "
+; format-volume-prefix-foreground = ${colors.primary}
+; format-volume = <label-volume>
+
+; label-volume = %percentage%%
+
+; label-muted = muted
+; label-muted-foreground = ${colors.disabled}
+
+[module/pulseaudio]
+type = internal/pulseaudio
+; Sink to be used, if it exists (find using `pacmd list-sinks`, name field)
+; If not, uses default sink
+sink = alsa_output.pci-0000_12_00.3.analog-stereo
+use-ui-max = true
+interval = 5
+
+; Only applies if <ramp-volume> is used
+format-volume = <ramp-volume> <label-volume>
+ramp-volume-0 = "奔 "
+ramp-volume-1 = "墳 "
+ramp-volume-2 = " "
+label-muted = " "
+label-foreground = ${colors.disabled}
+click-right = pavucontrol
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+; format-prefix = " "
+label-layout = %layout%
+label-indicator-padding = 1
+label-indicator-margin = 1
+label-indicator-foreground = ${colors.background}
+label-indicator-background = ${colors.secondary}
+
+[module/powermenu]
+type = custom/menu
+expand-right = true
+format-spacing = 1
+label-open = ""
+label-open-foreground = ${colors.urgent}
+label-close = 
+label-close-foreground = ${colors.success}
+label-separator = •
+label-separator-foreground = ${colors.foreground}
+;Powermenu
+menu-0-0 = "Reboot"
+menu-0-0-exec = menu-open-1
+menu-0-0-foreground = ${colors.urgent}
+menu-0-1 = "Power Off"
+menu-0-1-exec = menu-open-2
+menu-0-1-foreground = ${colors.urgent}
+;Reboot
+menu-1-0 = ""
+menu-1-0-exec = menu-open-0
+menu-1-0-foreground = ${colors.success}
+menu-1-1 = "Reboot"
+menu-1-1-exec = systemctl reboot
+menu-1-1-foreground = ${colors.urgent}
+;Shutdown
+menu-2-0 = "Power Off"
+menu-2-0-exec = systemctl poweroff
+menu-2-0-foreground = ${colors.urgent}
+menu-2-1 = ""
+menu-2-1-exec = menu-open-0
+menu-2-1-foreground = ${colors.success}
+
+[network-base]
+type = internal/network
+interval = 5
+format-connected = <label-connected>
+format-disconnected = <label-disconnected>
+label-disconnected = offline
+
+[module/wlan]
+inherit = network-base
+interface-type = wireless
+label-connected = %essid% 
+
+[module/eth]
+inherit = network-base
+interface-type = wired
+label-active-font = 1
+label-connected = %ifname%
+
+[module/date]
+type = internal/date
+interval = 1
+date = %H:%M
+date-alt = %a %d %b %Y %H:%M:%S
+label = %date%
+# label-foreground = ${colors.primary}
+
+[settings]
+screenchange-reload = true
+pseudo-transparency = true
+
+; vim:ft=dosini

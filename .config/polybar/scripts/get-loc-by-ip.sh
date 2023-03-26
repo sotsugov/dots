@@ -1,4 +1,3 @@
-
 API="https://ipv4.am.i.mullvad.net/json"
 
 data=$(curl -sf $API)
